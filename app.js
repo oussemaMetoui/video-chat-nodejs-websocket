@@ -43,6 +43,7 @@ app.use((req, res, next) => {
 /**
  * Routing
  */
+app.get('/', (req, res) => res.send('Hello From video chat server!'));
 app.use('/auth', users)
 app.use('/rooms', rooms)
 
