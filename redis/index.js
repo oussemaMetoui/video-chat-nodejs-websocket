@@ -90,4 +90,4 @@ ChatRedis.prototype.setUser = function (room, socketId, newValue) {
     )
 }
 
-module.exports = new ChatRedis()
+module.exports = new ChatRedis() 

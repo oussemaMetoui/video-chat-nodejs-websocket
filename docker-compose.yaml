@@ -1,8 +1,55 @@
-version: '3'
+version: "3"
 services:
-  redis-server: 
-    image: 'redis'
+  redis-server:
+    image: "redis:alpine"
+    container_name: redis-server
+    ports:
+      - "6379"
+    networks:
+      - app-network
   node-app:
-    build: .
+    links:
+      - redis-server
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3001:3001"
+    restart: unless-stopped
+    container_name: nodejs
+    image: nodejs
+    networks:
+      - app-network
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - node-app
+    networks:
+      - app-network
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - web-root:/var/www/html
+  #     - certbot-etc:/etc/letsencrypt
+  #     - certbot-var:/var/lib/letsencrypt
+  #   depends_on:
+  #     - webserver
+  #   command: certonly --webroot --webroot-path=/var/www/html --email admin@sprint-app.com --agree-tos --no-eff-email --staging -d admin.thesportopia.com
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
