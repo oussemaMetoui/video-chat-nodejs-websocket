@@ -1,5 +1,6 @@
 var https = require('https');
 const redis = require('socket.io-redis');
+var fs = require('fs')
 
 const app = require('./app')
 const config = require('./config')
