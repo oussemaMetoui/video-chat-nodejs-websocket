@@ -113,4 +113,5 @@ temp/
 
 *.rdb
 
-# End of https://www.gitignore.io/api/node,redis
+server.key
+server.cert

@@ -1,14 +1,15 @@
 const redis = require('redis')
 const bluebird = require('bluebird')
 
-const config = require('./../config/index')
+const config = require('./../config/')
 
 // Using promises
 bluebird.promisifyAll(redis);
 
 function ChatRedis() {
     this.client = redis.createClient({
-        host: config.REDIS_HOST
+        host: config.REDIS_HOST,
+        port: config.REDIS_PORT
     });
 }
 
@@ -90,4 +91,4 @@ ChatRedis.prototype.setUser = function (room, socketId, newValue) {
     )
 }
 
-module.exports = new ChatRedis() 
+module.exports = new ChatRedis()

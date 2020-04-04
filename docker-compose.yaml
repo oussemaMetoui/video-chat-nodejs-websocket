@@ -26,6 +26,7 @@ services:
     restart: unless-stopped
     ports:
       - "5000:80"
+      - "443:443"
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
@@ -34,16 +35,16 @@ services:
       - node-app
     networks:
       - app-network
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - web-root:/var/www/html
-  #     - certbot-etc:/etc/letsencrypt
-  #     - certbot-var:/var/lib/letsencrypt
-  #   depends_on:
-  #     - webserver
-  #   command: certonly --webroot --webroot-path=/var/www/html --email admin@sprint-app.com --agree-tos --no-eff-email --staging -d admin.thesportopia.com
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - web-root:/var/www/html
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - webserver
+    command: certonly --webroot --webroot-path=/var/www/html --email admin@sprint-app.com --agree-tos --no-eff-email --staging -d admin.thesportopia.com -d thesportopia.com
 volumes:
   certbot-etc:
   certbot-var:

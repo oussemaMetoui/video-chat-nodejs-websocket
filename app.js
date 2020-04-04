@@ -55,5 +55,4 @@ app.use('/rooms', rooms)
  */
 chat.createNameSpace(io)
 
-
 module.exports = app
